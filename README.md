@@ -1,71 +1,115 @@
-English | [简体中文](./README.zh-CN.md)
+# AIAOS-Cloel-RSI
 
-# Cloel
+AIAOS-Cloel-RSI is an Emacs + Clojure integration framework that provides a high-performance, asynchronous backend for Emacs.
 
-Cloel is a collaborative programming framework that combines Clojure and Elisp, leveraging Clojure's ecosystem and multi-threading capabilities to extend Emacs.
+## Architecture
 
-Key advantages:
-1. Speed: Time-consuming code runs in an external Clojure process, avoiding Emacs freezes
-2. Multi-threading: Utilizes Clojure's multi-threading to ensure fast responsiveness
-3. Lisp style: Write plugins in Clojure while maintaining a Lisp style
-4. Powerful ecosystem: Access to JVM and Python software package ecosystems
-5. Low barrier: Out-of-the-box framework, simplifying Clojure extension development for Emacs
+```
+Emacs (elisp) → Cloel (elisp + clojure) → Clojure Server → AIAOS Framework (clojure)
+```
+
+## Features
+
+- **M-x aiaos-rsi**: Launch the AIAOS-RSI interface
+- **Status monitoring**: Monitor all layers (Emacs, Cloel, Clojure, AIAOS)
+- **LLM Provider integration**: Multiple LLM providers with automatic failover
+- **Command execution**: Execute commands through the AIAOS framework
+- **Self-evolution**: Framework that improves itself over time
 
 ## Installation
 
-1. Install Clojure, refer to the [official guide](https://clojure.org/guides/install_clojure)
+### Prerequisites
 
-2. Install [parseedn](https://github.com/clojure-emacs/parseedn)
+- Emacs 27+
+- Clojure 1.11+
 
-3. Install Cloel Elisp part:
-   - Clone the repository and add to your Emacs configuration:
-   ```elisp
-   (add-to-list 'load-path "<path-to-cloel>")
-   (require 'cloel)
-   ```
+### Setup
 
-4. Install Cloel Clojure part:
-   ```bash
-   cd cloel
-   clojure -X:jar
-   clojure -X:install
-   ```
+1. Clone or download the project to `~/.emacs.d/aiaos-cloel-rsi`
+2. Add the following to your `~/.emacs`:
 
-5. Test:
-   - Execute `M-x load-file` and select `cloel/demo/app.el`
-   - Run `M-x cloel-demo-test`
-   - If "Cloel rocks!" is displayed, installation is successful. If not, check the `*cloel-demo-clojure-server*` buffer for error messages
+```elisp
+(load-file "~/.emacs.d/aiaos-cloel-rsi/aiaos-cloel-rsi.el")
+```
 
-## Version Update
-After each update of Cloel, you need to execute `clojure -X:jar; clojure -X:install` to update the Clojure code. 
+3. Restart Emacs
 
-## Development
-During development, you can use the grep "STEP" keyword to understand the structure of the Demo program.
+## Usage
 
-Below are the API details, replace `app` with your application name:
+### Launch the UI
 
-Elisp API:
-- `cloel-register-app`: Register an application, requires input of the application name and the path to the Clojure code, using `app` as an example for the application name
-- `cloel-app-start/stop/restart-process`: Manage the Clojure process
-- `cloel-app-send-message`: Elisp asynchronously sends messages to Clojure
-- `cloel-app-call-async`: Elisp asynchronously calls Clojure functions
-- `cloel-app-call-sync`: Elisp synchronously calls Clojure functions
+```elisp
+M-x aiaos-rsi
+```
 
-Clojure API:
-- `cloel/start-server`: Start the Clojure process
-- `cloel/elisp-show-message`: Clojure asynchronously displays messages in the minibuffer
-- `cloel/elisp-get-var`: Clojure synchronously gets Elisp variable values
-- `cloel/elisp-eval-async`: Clojure asynchronously calls Elisp functions
-- `cloel/elisp-eval-sync`: Clojure synchronously calls Elisp functions
+### Execute a command
 
-Interfaces that can be reloaded in Clojure:
-- `handle-client-async-call`: Interface for handling Elisp asynchronous calls to Clojure functions
-- `handle-client-sync-call`: Interface for handling Elisp synchronous calls to Clojure functions
-- `handle-client-message`: Interface for handling Elisp asynchronously sending messages to Clojure
-- `handle-client-connected`: Interface for when the Client connects to the Clojure process
+```elisp
+M-x aiaos-cloel-rsi-execute
+```
 
-In Clojure, we can use `alter-var-root` to reload the above interface implementations on the application side. For specifics, please refer to `demo/app.clj`
+### Show status
 
-## Ecosystem Applications
-- [reorder-file](https://github.com/manateelazycat/reorder-file): Automatically reorders numbering within files
-- [cloel-rand-quote](https://github.com/kimim/cloel-rand-quote): Insert a random quote
+```elisp
+M-x aiaos-cloel-rsi-status
+```
+
+## Configuration
+
+### LLM Provider
+
+Edit `~/.emacs.d/aiaos-cloel-rsi/config.edn` to configure LLM providers:
+
+```clojure
+{:llm {:provider "openrouter"
+       :api-key "your-api-key-here"
+       :model "mistralai/mistral-7b-instruct"}}
+```
+
+### Server Port
+
+Edit `~/.emacs.d/aiaos-cloel-rsi/aiaos-cloel-rsi.el` to change the server port:
+
+```elisp
+(defcustom aiaos-cloel-rsi-clojure-server-port 8080
+  "Port for the Clojure server."
+  ...)
+```
+
+## Project Structure
+
+```
+aiaos-cloel-rsi/
+├── aiaos-cloel-rsi.el          # Main elisp file
+├── aiaos-cloel-rsi-ui.el       # UI definitions
+├── aiaos-cloel-rsi-clojure.el  # Clojure server wrapper
+├── project.clj                 # Clojure project configuration
+├── src/
+│   └── aiaos_cloel_rsi/
+│       ├── server.clj          # Clojure server
+│       ├── aiaos_framework.clj # AIAOS framework (Clojure)
+│       └── llm_provider.clj    # LLM provider integration
+└── README.md
+```
+
+## Architecture Details
+
+### Emacs Layer (elisp)
+
+Provides the user interface and command entry point. Communicates with the Clojure server via HTTP.
+
+### Cloel Layer (elisp + clojure)
+
+The gateway between Emacs and Clojure. Handles protocol translation and request routing.
+
+### Clojure Layer (clojure)
+
+The high-performance backend. Handles command processing, LLM integration, and framework management.
+
+### AIAOS Layer (clojure)
+
+The core AIAOS framework implementation in Clojure. Provides command processing, self-evolution, and auto-improvement.
+
+## License
+
+GNU General Public License v3.0
