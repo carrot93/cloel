@@ -31,6 +31,13 @@ Cloel 是一个结合 Clojure 和 Elisp 的协同编程框架， 利用 Clojure 
    clojure -X:install
    ```
 
+   - 中国用户， 可能会面临无法访问镜像源无法访问的问题， 请使用下面命令行来安装配置
+
+   ```bash
+   clojure -Sdeps '{:mvn/repos {"central" {:url "https://maven.aliyun.com/repository/public"} "clojars" {:url "https://mirrors.tuna.tsinghua.edu.cn/clojars"}}}' -X:jar
+   clojure -Sdeps '{:mvn/repos {"central" {:url "https://maven.aliyun.com/repository/public"} "clojars" {:url "https://mirrors.tuna.tsinghua.edu.cn/clojars"}}}' -X:install
+   ```
+
 5. 测试：
    - 执行 `M-x load-file` 选择 `cloel/demo/app.el`
    - 执行 `M-x cloel-demo-test`
@@ -45,7 +52,7 @@ Cloel 是一个结合 Clojure 和 Elisp 的协同编程框架， 利用 Clojure 
 以下是 API 详情, 将 `app` 替换为你的应用名:
 
 Elisp API:
-- `cloel-register-app`: 注册应用, 需要输入应用名和 Clojure 代码的路径， 应用名以 `app` 为例
+- `cloel-register-app`: 注册应用, 需要输入应用名, 应用目录， 别名以及 clj-type, 别名可选 `clojure` 或 `bb`
 - `cloel-app-start/stop/restart-process`: 管理 Clojure 进程
 - `cloel-app-send-message`: Elisp 异步发送消息给 Clojure 
 - `cloel-app-call-async`: Elisp 异步调用 Clojure 函数
@@ -69,3 +76,4 @@ Clojure 可以被重载的接口：
 ## 生态应用
 - [reorder-file](https://github.com/manateelazycat/reorder-file): 自动排序文件中的序号
 - [cloel-rand-quote](https://github.com/kimim/cloel-rand-quote): 插入一句格言警句（英语）
+- [cloel-agent](https://gitcode.com/sme_engine/cloel-agent): cloel-agent client(默认支持ollama和本地agent）

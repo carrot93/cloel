@@ -41,7 +41,7 @@ Handles potential Windows socket issues with additional error checking."
           (reset! client-connection nil))
         (println "[SEND-ERROR] No active connection or writer is nil")
         false))))
-	
+
 (defn generate-call-id []
   (swap! call-id inc))
 
@@ -145,8 +145,8 @@ Returns nil on EOF or error."
     ;; Atomic operation to set connection, use lock to ensure thread safety
     (locking client-connection
       (when @client-connection
-        (println "[CONN] Closing previous connection")
-        (try (.close (:socket @client-connection)) (catch Exception _)))
+        (println "[CONN] Closing previous connection"))
+        (try (.close (:socket @client-connection)) (catch Exception _))
       (reset! client-connection {:socket client-socket :reader reader :writer writer}))
     
     (println "[CONN] Handler started for:" client-id)

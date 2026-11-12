@@ -1,1 +1,7 @@
-{:deps {io.github.manateelazycat.cloel/cloel {:mvn/version "1.0.0"}}}
+{:deps {io.github.manateelazycat.cloel/cloel {:mvn/version "1.0.0"}}
+
+ :paths ["src"]
+
+ :aliases
+ {:cloel {:main-opts ["-m" "app"]}
+  :dev   {:extra-paths ["dev"]}}}

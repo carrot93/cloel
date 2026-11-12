@@ -42,6 +42,13 @@ Emacs (elisp) → Cloel (elisp + clojure) → Clojure Server → AIAOS Framework
 M-x aiaos-rsi
 ```
 
+### Elisp API
+- `cloel-register-app`: Register an application. You need to input the application name, application directory, alias, and clj-type. The alias can be either `clojure` or `bb`.
+- `cloel-app-start/stop/restart-process`: Manage the Clojure process
+- `cloel-app-send-message`: Elisp asynchronously sends messages to Clojure
+- `cloel-app-call-async`: Elisp asynchronously calls Clojure functions
+- `cloel-app-call-sync`: Elisp synchronously calls Clojure functions
+
 ### Execute a command
 
 ```elisp
@@ -109,6 +116,16 @@ The high-performance backend. Handles command processing, LLM integration, and f
 ### AIAOS Layer (clojure)
 
 The core AIAOS framework implementation in Clojure. Provides command processing, self-evolution, and auto-improvement.
+
+## Ecosystem Applications
+- [reorder-file](https://github.com/manateelazycat/reorder-file): Automatically reorders numbering within files
+- [cloel-rand-quote](https://github.com/kimim/cloel-rand-quote): Insert a random quote
+- [cloel-agent](https://github.com/carrot93/cloel-agent): Emacs auto coding cloel-agent for ollama
+
+## Todo
+- GUI Stack
+- stream-data-io to clojure server
+- support E/S model in Windows
 
 ## License
 
