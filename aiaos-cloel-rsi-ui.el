@@ -186,6 +186,18 @@
     (skip-chars-forward "> ")
     (delete-region (point) (line-end-position))))
 
+;;;###autoload
+(defun aiaos-cloel-rsi-ui-append-output (text)
+  "Append TEXT to the UI output."
+  (let ((buffer (get-buffer aiaos-cloel-rsi-ui-buffer-name)))
+    (when buffer
+      (with-current-buffer buffer
+        (read-only-mode -1)
+        (goto-char (point-max))
+        (insert text)
+        (read-only-mode 1)
+        (goto-char (point-max))))))
+
 (provide 'aiaos-cloel-rsi-ui)
 
 ;;; aiaos-cloel-rsi-ui.el ends here

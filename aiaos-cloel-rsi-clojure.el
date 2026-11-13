@@ -31,7 +31,7 @@
 
 (defun aiaos-cloel-rsi-http-url (path)
   "Construct HTTP URL for PATH."
-  (format "%s:%d%s" aiaos-cloel-rsi-http-host aiaos-cloel-rsi-http-port aiaos-cloel-rsi-http-port path))
+  (format "%s:%d%s" aiaos-cloel-rsi-http-host aiaos-cloel-rsi-http-port path))
 
 ;;;###autoload
 (defun aiaos-cloel-rsi-start-clojure-server ()
@@ -93,7 +93,7 @@
       (let* ((payload (json-encode (list :command command)))
              (url-request-method "POST")
              (url-request-data payload)
-             (url-request-extra-headers '(("Content-Type" . "application/json")))
+             (url-request-extra-headers '((Content-Type . "application/json")))
              (buffer (url-retrieve (aiaos-cloel-rsi-http-url "/command"))))
         (with-current-buffer buffer
           (goto-char (point-min))

@@ -1,6 +1,6 @@
 # AIAOS-Cloel-RSI
 
-AIAOS-Cloel-RSI is an Emacs + Clojure integration framework that provides a high-performance, asynchronous backend for Emacs.
+AIAOS-Cloel-RSI is an Emacs + Cloel + Clojure integration framework that provides a high-performance, asynchronous backend for Emacs, based on Cloel Middleware.
 
 ## Architecture
 
